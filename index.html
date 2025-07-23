@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Das Holländische Service</title>
-  <style>
+ <style>
   body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     line-height: 1.6;
     font-size: 20px;
+    background-color: #fff;
+    color: #000;
   }
 
   h1 {
@@ -32,12 +34,13 @@
   .lang-switch button {
     background-color: transparent;
     border: 2px solid black;
+    color: black;
     padding: 12px 20px;
     margin-left: 10px;
     font-size: 18px;
     cursor: pointer;
     border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   .lang-switch button:hover {
@@ -46,9 +49,9 @@
   }
 
   .lang-section {
-    display: none;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
     padding: 40px 20px;
     max-width: 960px;
     margin: auto;
@@ -57,8 +60,8 @@
   }
 
   .lang-section.active {
-    display: block;
     opacity: 1;
+    visibility: visible;
     position: relative;
   }
 </style>
@@ -73,11 +76,11 @@
   function switchLanguage(lang) {
     const currentScroll = window.scrollY;
     const sections = document.querySelectorAll('.lang-section');
+
     sections.forEach(function (el) {
       el.classList.remove('active');
     });
 
-    // маленькая задержка для плавного затемнения
     setTimeout(function () {
       document.getElementById(lang).classList.add('active');
       window.scrollTo({ top: currentScroll });
