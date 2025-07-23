@@ -3,82 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <title>Das Holländische Service</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      line-height: 1.6;
-      font-size: 20px;
-      background-color: #fff;
-      color: #000;
-    }
+ <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 20px;
+    background-color: #fff;
+    color: #000;
+  }
 
-    h1 {
-      font-size: 46px;
-      margin-top: 1.5em;
-    }
+  h1 {
+    font-size: 46px;
+    margin-top: 1.5em;
+  }
 
-    h2 {
-      font-size: 42px;
-      margin-top: 1.2em;
-    }
+  h2 {
+    font-size: 42px;
+    margin-top: 1.2em;
+  }
 
-    .lang-switch {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
-    }
+  .lang-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+  }
 
-    .lang-switch button {
-      background-color: transparent;
-      border: 2px solid black;
-      color: black;
-      padding: 20px 30px;
-      margin-left: 10px;
-      font-size: 32px;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: background-color 0.4s ease, color 0.4s ease;
-    }
+  .lang-switch button {
+    background-color: transparent;
+    border: 2px solid black;
+    color: black;
+    padding: 20px 30px;
+    margin-left: 10px;
+    font-size: 32px;
+    font-weight: bold; 
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
 
-    .lang-switch button:hover {
-      background-color: black;
-      color: white;
-    }
+  .lang-switch button:hover {
+    background-color: black;
+    color: white;
+  }
 
-    .lang-section {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-      padding: 40px 20px;
-      max-width: 960px;
-      margin: auto;
-      width: 100%;
-      position: absolute;
-      top: 120px;
-    }
+  .lang-section {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    padding: 40px 20px;
+    max-width: 960px;
+    margin: auto;
+    position: absolute;
+    width: 100%;
+  }
 
-    .lang-section.active {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      position: relative;
-    }
-  </style>
-</head>
-<body>
+  .lang-section.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+</style>
 
-  <!-- 🔘 КНОПКИ ЯЗЫКОВ -->
-  <div class="lang-switch">
-    <button onclick="switchLanguage('de')">Deutsch</button>
-    <button onclick="switchLanguage('en')">English</button>
-    <button onclick="switchLanguage('nl')">Niederländisch</button>
-  </div>
-  <div id="content">
+<div class="lang-switch">
+  <button onclick="switchLanguage('de')">Deutsch</button>
+  <button onclick="switchLanguage('en')">English</button>
+  <button onclick="switchLanguage('nl')">Niederländisch</button>
+</div>
+
+<script>
+  function switchLanguage(lang) {
+    const currentScroll = window.scrollY;
+    const sections = document.querySelectorAll('.lang-section');
+
+    sections.forEach(function (el) {
+      el.classList.remove('active');
+    });
+
+    setTimeout(function () {
+      document.getElementById(lang).classList.add('active');
+      window.scrollTo({ top: currentScroll });
+    }, 50);
+  }
+</script>
     <div id="de" class="lang-section active">
        <h1>Das Holländische Service – Landschaften auf Porzellan</h1>
   <p>Das Holländische Service ist eines der berühmtesten historischen Tafelservice aus der Porzellanmanufaktur Fürstenberg. Mit seinen 185 Teilen ist dieses einzigartige Ensemble das am umfangreichsten erhaltene Landschaftsservice des 18. Jahrhunderts aus Fürstenberg.</p>
