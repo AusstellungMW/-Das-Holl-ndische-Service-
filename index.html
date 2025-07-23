@@ -4,61 +4,75 @@
   <meta charset="UTF-8">
   <title>Das Holländische Service</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Georgia, 'Times New Roman', serif;
-      line-height: 1.6;
-      background: #fdfdfd;
-      color: #222;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      transition: opacity 0.5s ease;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    font-size: 20px; /* Увеличенный основной шрифт */
+  }
 
-    .lang-buttons {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      gap: 10px;
-      z-index: 9999;
-    }
+  h1 {
+    font-size: 28px; /* Увеличенный заголовок */
+    margin-top: 1.5em;
+  }
 
-    .lang-buttons button {
-      background: transparent;
-      border: 2px solid #000;
-      color: #000;
-      padding: 8px 14px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background 0.3s, color 0.3s;
-    }
+  h2 {
+    font-size: 24px; /* Увеличенные подзаголовки */
+    margin-top: 1.2em;
+  }
 
-    .lang-buttons button:hover {
-      background: #000;
-      color: #fff;
-    }
+  .lang-switch {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+  }
 
-    .lang-section {
-      display: none;
-    }
+  .lang-switch button {
+    background-color: transparent;
+    border: 2px solid black;
+    padding: 12px 20px; /* Увеличенные кнопки */
+    margin-left: 10px;
+    font-size: 18px; /* Крупнее текст в кнопках */
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    .lang-section.active {
-      display: block;
-    }
+  .lang-switch button:hover {
+    background-color: black;
+    color: white;
+  }
 
-    hr {
-      margin: 2em 0;
-    }
-  </style>
-</head>
-<body>
-  <div class="lang-buttons">
-    <button onclick="switchLang('de')">Deutsch</button>
-    <button onclick="switchLang('en')">English</button>
-    <button onclick="switchLang('nl')">Niederländisch</button>
-  </div>
+  .lang-section {
+    display: none;
+    padding: 40px 20px;
+    max-width: 960px;
+    margin: auto;
+  }
+
+  .lang-section.active {
+    display: block;
+  }
+</style>
+
+<div class="lang-switch">
+  <button onclick="switchLanguage('de')">Deutsch</button>
+  <button onclick="switchLanguage('en')">English</button>
+  <button onclick="switchLanguage('nl')">Niederländisch</button>
+</div>
+
+<script>
+  function switchLanguage(lang) {
+    const currentScroll = window.scrollY;
+    document.querySelectorAll('.lang-section').forEach(function(el) {
+      el.classList.remove('active');
+    });
+    document.getElementById(lang).classList.add('active');
+    window.scrollTo({ top: currentScroll });
+  }
+</script>
 
   <div id="content">
     <div id="de" class="lang-section active">
