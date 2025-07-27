@@ -299,25 +299,10 @@
     currentLang = lang;
   }
 
-  // Аудиофайлы — немецкие версии (нумерация с 0)
-  const audioFiles = [
-    'audio/de/1.mp3',
-    'audio/de/2.mp3',
-    'audio/de/3.mp3',
-    'audio/de/4.mp3',
-    'audio/de/5.mp3',
-    'audio/de/6.mp3',
-    'audio/de/7.mp3',
-    'audio/de/8.mp3',
-    'audio/de/9.mp3',
-    'audio/de/10.mp3'
-  ];
-
   const audioPlayer = new Audio();
   let currentIcon = null;
   let currentIndex = null;
 
-  // Обработчики для всех иконок
   document.querySelectorAll('.speaker-icon').forEach(icon => {
     icon.addEventListener('click', () => {
       const index = parseInt(icon.getAttribute('data-index'));
@@ -339,8 +324,10 @@
         audioPlayer.currentTime = 0;
       }
 
-      // Воспроизводим нужный
-      audioPlayer.src = audioFiles[index];
+      // Формируем путь к файлу на основе языка и индекса
+      const filePath = `audio/${currentLang}/${index + 1}.mp3`;
+
+      audioPlayer.src = filePath;
       audioPlayer.play();
       icon.src = 'img/speaker.png';
       currentIcon = icon;
@@ -348,7 +335,6 @@
     });
   });
 
-  // Когда воспроизведение завершилось — иконку вернуть
   audioPlayer.addEventListener('ended', () => {
     if (currentIcon) {
       currentIcon.src = 'img/speaker0.png';
@@ -357,6 +343,7 @@
     }
   });
 </script>
+
 
 
 
