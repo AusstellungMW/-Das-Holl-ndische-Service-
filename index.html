@@ -292,12 +292,9 @@
     newSection.classList.add('active');
 
     currentLang = lang;
-    checkVisibleHeading(); // Обновим видимость при смене языка
   }
 
-  const audioBtn = document.getElementById('audioBtn');
-  const audioPlayer = document.getElementById('audioPlayer');
-
+  // Аудиофайлы — немецкие версии (нумерация с 0)
   const audioFiles = [
     'audio/de/1.mp3',
     'audio/de/2.mp3',
@@ -311,52 +308,49 @@
     'audio/de/10.mp3'
   ];
 
-  let currentAudioIndex = -1;
-  let lastPlayedIndex = -1;
+  const audioPlayer = new Audio();
+  let currentIcon = null;
+  let currentIndex = null;
 
-  function checkVisibleHeading() {
-    const section = document.getElementById(currentLang);
-    const headings = section.querySelectorAll('h2');
+  // Обработчики для всех иконок
+  document.querySelectorAll('.speaker-icon').forEach(icon => {
+    icon.addEventListener('click', () => {
+      const index = parseInt(icon.getAttribute('data-index'));
 
-    let foundIndex = -1;
-    for (let i = 0; i < headings.length; i++) {
-      const rect = headings[i].getBoundingClientRect();
-      if (rect.top >= -100 && rect.top < 300) {
-        foundIndex = i;
-        break;
+      // Если клик по той же иконке и звук идёт → остановим
+      if (currentIcon === icon && !audioPlayer.paused) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        icon.src = 'img/speaker0.png';
+        currentIcon = null;
+        currentIndex = null;
+        return;
       }
-    }
 
-    if (foundIndex !== -1 && foundIndex !== currentAudioIndex) {
-      currentAudioIndex = foundIndex;
-
-      // Если в этот момент уже что-то играет — остановим
-      if (!audioPlayer.paused && !audioPlayer.ended) {
+      // Если другой файл играет — остановим и сбросим его иконку
+      if (currentIcon && currentIcon !== icon) {
+        currentIcon.src = 'img/speaker0.png';
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
       }
+
+      // Воспроизводим нужный
+      audioPlayer.src = audioFiles[index];
+      audioPlayer.play();
+      icon.src = 'img/speaker.png';
+      currentIcon = icon;
+      currentIndex = index;
+    });
+  });
+
+  // Когда воспроизведение завершилось — иконку вернуть
+  audioPlayer.addEventListener('ended', () => {
+    if (currentIcon) {
+      currentIcon.src = 'img/speaker0.png';
+      currentIcon = null;
+      currentIndex = null;
     }
-  }
-
-  function playCurrentAudio() {
-    if (currentAudioIndex === -1) return;
-
-    const file = audioFiles[currentAudioIndex];
-
-    // Если уже проигрывается — остановить
-    if (!audioPlayer.paused && !audioPlayer.ended) {
-      audioPlayer.pause();
-      audioPlayer.currentTime = 0;
-      return;
-    }
-
-    audioPlayer.src = file;
-    audioPlayer.play();
-    lastPlayedIndex = currentAudioIndex;
-  }
-
-  window.addEventListener('scroll', checkVisibleHeading);
-  checkVisibleHeading();
+  });
 </script>
 
 
