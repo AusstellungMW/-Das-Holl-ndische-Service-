@@ -74,6 +74,21 @@
     pointer-events: auto;
     position: relative;
   }
+  .audio-button {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.audio-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 </style>
 
 <div class="lang-switch">
@@ -277,5 +292,57 @@
     currentLang = lang;
   }
 </script>
+  <script>
+  const audioBtn = document.getElementById('audioBtn');
+  const audioPlayer = document.getElementById('audioPlayer');
+
+  const audioFiles = [
+    'audio/de/1.mp3',
+    'audio/de/2.mp3',
+    'audio/de/3.mp3',
+    'audio/de/4.mp3',
+    'audio/de/5.mp3',
+    'audio/de/6.mp3',
+    'audio/de/7.mp3',
+    'audio/de/8.mp3',
+    'audio/de/9.mp3',
+    'audio/de/10.mp3'
+  ];
+
+  let currentAudioIndex = -1;
+
+  function checkVisibleHeading() {
+    const section = document.getElementById(currentLang);
+    const headings = section.querySelectorAll('h2');
+
+    let foundIndex = -1;
+    for (let i = 0; i < headings.length; i++) {
+      const rect = headings[i].getBoundingClientRect();
+      if (rect.top >= 40 && rect.top < 200) {
+        foundIndex = i;
+        break;
+      }
+    }
+
+    if (foundIndex !== -1) {
+      currentAudioIndex = foundIndex;
+      audioBtn.classList.add('visible');
+    } else {
+      audioBtn.classList.remove('visible');
+      currentAudioIndex = -1;
+    }
+  }
+
+  function playCurrentAudio() {
+    if (currentAudioIndex === -1) return;
+    if (!audioFiles[currentAudioIndex]) return;
+
+    audioPlayer.src = audioFiles[currentAudioIndex];
+    audioPlayer.play();
+  }
+
+  window.addEventListener('scroll', checkVisibleHeading);
+</script>
+
 
 
