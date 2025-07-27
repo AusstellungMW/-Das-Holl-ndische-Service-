@@ -86,21 +86,14 @@
 
 .audio-button {
   position: fixed;
-  top: 160px;         /* ниже */
-  right: 80px;        /* СДВИГАЕМ ЛЕВЕЕ (было 20px) */
+  top: 160px;
+  right: 80px;
   z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
   transition: opacity 0.4s ease;
 }
 
-.audio-button.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 .audio-button img {
-  width: 196px;       /* В 2 РАЗА БОЛЬШЕ */
+  width: 196px;
   height: 196px;
 }
 
@@ -290,7 +283,7 @@
 
 <!-- Кнопка громкоговорителя и аудиоплеер -->
 <div id="audioBtn" class="audio-button" onclick="playCurrentAudio()">
-  <img src="img/speaker.png" alt="Audio" style="width: 48px; height: 48px;">
+  <img src="img/speaker.png" alt="Audio" style="width: 96px; height: 96px;">
 </div>
 <audio id="audioPlayer" src=""></audio>
 
@@ -307,6 +300,7 @@
     newSection.classList.add('active');
 
     currentLang = lang;
+    checkVisibleHeading(); // Обновим видимость при смене языка
   }
 
   const audioBtn = document.getElementById('audioBtn');
@@ -326,6 +320,7 @@
   ];
 
   let currentAudioIndex = -1;
+  let lastPlayedIndex = -1;
 
   function checkVisibleHeading() {
     const section = document.getElementById(currentLang);
@@ -340,38 +335,36 @@
       }
     }
 
-    if (foundIndex !== -1) {
+    if (foundIndex !== -1 && foundIndex !== currentAudioIndex) {
       currentAudioIndex = foundIndex;
-      audioBtn.classList.add('visible');
-    } else {
-      audioBtn.classList.remove('visible');
-      currentAudioIndex = -1;
+
+      // Если в этот момент уже что-то играет — остановим
+      if (!audioPlayer.paused && !audioPlayer.ended) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+      }
     }
   }
 
   function playCurrentAudio() {
-  if (currentAudioIndex === -1) return;
+    if (currentAudioIndex === -1) return;
 
-  // Если уже проигрывается этот же файл — остановить
-  if (!audioPlayer.paused && !audioPlayer.ended) {
-    audioPlayer.pause();
-    audioPlayer.currentTime = 0;
-    return;
+    const file = audioFiles[currentAudioIndex];
+
+    // Если уже проигрывается — остановить
+    if (!audioPlayer.paused && !audioPlayer.ended) {
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+      return;
+    }
+
+    audioPlayer.src = file;
+    audioPlayer.play();
+    lastPlayedIndex = currentAudioIndex;
   }
 
-  // Задать новый src только если другой файл
-  const newSrc = audioFiles[currentAudioIndex];
-  if (audioPlayer.src !== location.href + newSrc) {
-    audioPlayer.src = newSrc;
-  }
-
-  audioPlayer.play();
-}
-
-
-    window.addEventListener('scroll', checkVisibleHeading);
-  checkVisibleHeading(); // вызываем сразу при загрузке
-
+  window.addEventListener('scroll', checkVisibleHeading);
+  checkVisibleHeading();
 </script>
 
 
