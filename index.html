@@ -86,8 +86,8 @@
 
 .audio-button {
   position: fixed;
-  top: 140px;         /* раньше было 100px — теперь чуть ниже */
-  right: 20px;
+  top: 160px;         /* ниже */
+  right: 80px;        /* СДВИГАЕМ ЛЕВЕЕ (было 20px) */
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
@@ -100,9 +100,10 @@
 }
 
 .audio-button img {
-  width: 64px;        /* раньше 48px — немного увеличено */
-  height: 64px;
+  width: 96px;       /* В 2 РАЗА БОЛЬШЕ */
+  height: 96px;
 }
+
 
 
 </style>
@@ -333,7 +334,7 @@
     let foundIndex = -1;
     for (let i = 0; i < headings.length; i++) {
       const rect = headings[i].getBoundingClientRect();
-      if (rect.top >= 0 && rect.top < 300) {
+      if (rect.top >= -100 && rect.top < 300) {
         foundIndex = i;
         break;
       }
