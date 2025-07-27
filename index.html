@@ -84,10 +84,26 @@
   transition: opacity 0.4s ease;
 }
 
+.audio-button {
+  position: fixed;
+  top: 140px;         /* раньше было 100px — теперь чуть ниже */
+  right: 20px;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
 .audio-button.visible {
   opacity: 1;
   pointer-events: auto;
 }
+
+.audio-button img {
+  width: 64px;        /* раньше 48px — немного увеличено */
+  height: 64px;
+}
+
 
 </style>
 
@@ -317,7 +333,7 @@
     let foundIndex = -1;
     for (let i = 0; i < headings.length; i++) {
       const rect = headings[i].getBoundingClientRect();
-      if (rect.top >= 40 && rect.top < 200) {
+      if (rect.top >= 0 && rect.top < 300) {
         foundIndex = i;
         break;
       }
@@ -333,12 +349,24 @@
   }
 
   function playCurrentAudio() {
-    if (currentAudioIndex === -1) return;
-    if (!audioFiles[currentAudioIndex]) return;
+  if (currentAudioIndex === -1) return;
 
-    audioPlayer.src = audioFiles[currentAudioIndex];
-    audioPlayer.play();
+  // Если уже проигрывается этот же файл — остановить
+  if (!audioPlayer.paused && !audioPlayer.ended) {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+    return;
   }
+
+  // Задать новый src только если другой файл
+  const newSrc = audioFiles[currentAudioIndex];
+  if (audioPlayer.src !== location.href + newSrc) {
+    audioPlayer.src = newSrc;
+  }
+
+  audioPlayer.play();
+}
+
 
     window.addEventListener('scroll', checkVisibleHeading);
   checkVisibleHeading(); // вызываем сразу при загрузке
